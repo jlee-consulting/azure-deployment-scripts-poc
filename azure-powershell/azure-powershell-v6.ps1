@@ -47,12 +47,16 @@ Install-Module SharePointPnPPowerShellOnline -SkipPublisherCheck -AllowClobber -
 # Get-PnpList
 
 
-$scope = New-Object Microsoft.Open.MsGraph.Model.PermissionScope
+## The provided script failed with the following error:
+## System.Management.Automation.PSArgumentException: 
+## Cannot find type [Microsoft.Open.MsGraph.Model.PermissionScope]: 
+## verify that the assembly containing this type is loaded. at System.Management.Automation.MshCommandRuntime.ThrowTerminatingError(ErrorRecord errorRecord) at <ScriptBlock>, /mnt/azscripts/azscriptinput/azure-powershell-v6.ps1: line 50 at <ScriptBlock>, <No file>: line 1 at <ScriptBlock>, /mnt/azscripts/azscriptinput/DeploymentScript.ps1: line 220. Please refer to https://aka.ms/DeploymentScriptsTroubleshoot for more deployment script information. (Code: DeploymentScriptError)
+# $scope = New-Object Microsoft.Open.MsGraph.Model.PermissionScope
 $preAuthorizedApplication = New-Object 'Microsoft.Open.MSGraph.Model.PreAuthorizedApplication'
 
 $appRole = New-Object 'Microsoft.Open.MSGraph.Model.AppRole'
 
-$scopes = New-Object System.Collections.Generic.List[Microsoft.Open.MsGraph.Model.PermissionScope]
+# $scopes = New-Object System.Collections.Generic.List[Microsoft.Open.MsGraph.Model.PermissionScope]
 $appRoles = New-Object System.Collections.Generic.List[Microsoft.Open.MsGraph.Model.AppRole]
 $preAuthorizedApplications = New-Object 'System.Collections.Generic.List[Microsoft.Open.MSGraph.Model.PreAuthorizedApplication]'
 
