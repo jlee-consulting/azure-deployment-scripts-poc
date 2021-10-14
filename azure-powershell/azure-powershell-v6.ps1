@@ -46,6 +46,9 @@ Install-Module SharePointPnPPowerShellOnline -SkipPublisherCheck -AllowClobber -
 ## Get-PnPList: There is currently no connection yet. Use Connect-PnPOnline to connect.
 # Get-PnpList
 
+Install-Module AzureAD -SkipPublisherCheck -AllowClobber -AcceptLicense -Force
+
+## Testing New-Object creation
 
 ## The provided script failed with the following error:
 ## System.Management.Automation.PSArgumentException: 
@@ -53,16 +56,11 @@ Install-Module SharePointPnPPowerShellOnline -SkipPublisherCheck -AllowClobber -
 ## verify that the assembly containing this type is loaded. at System.Management.Automation.MshCommandRuntime.ThrowTerminatingError(ErrorRecord errorRecord) at <ScriptBlock>, /mnt/azscripts/azscriptinput/azure-powershell-v6.ps1: line 50 at <ScriptBlock>, <No file>: line 1 at <ScriptBlock>, /mnt/azscripts/azscriptinput/DeploymentScript.ps1: line 220. Please refer to https://aka.ms/DeploymentScriptsTroubleshoot for more deployment script information. (Code: DeploymentScriptError)
 # $scope = New-Object Microsoft.Open.MsGraph.Model.PermissionScope
 
-Install-Module AzureAD -SkipPublisherCheck -AllowClobber -AcceptLicense -Force
-
-$preAuthorizedApplication = New-Object 'Microsoft.Open.MSGraph.Model.PreAuthorizedApplication'
-
-$appRole = New-Object 'Microsoft.Open.MSGraph.Model.AppRole'
-
+# $preAuthorizedApplication = New-Object 'Microsoft.Open.MSGraph.Model.PreAuthorizedApplication'
+# $appRole = New-Object 'Microsoft.Open.MSGraph.Model.AppRole'
 # $scopes = New-Object System.Collections.Generic.List[Microsoft.Open.MsGraph.Model.PermissionScope]
-$appRoles = New-Object System.Collections.Generic.List[Microsoft.Open.MsGraph.Model.AppRole]
-$preAuthorizedApplications = New-Object 'System.Collections.Generic.List[Microsoft.Open.MSGraph.Model.PreAuthorizedApplication]'
-
+# $appRoles = New-Object System.Collections.Generic.List[Microsoft.Open.MsGraph.Model.AppRole]
+# $preAuthorizedApplications = New-Object 'System.Collections.Generic.List[Microsoft.Open.MSGraph.Model.PreAuthorizedApplication]'
 
 
 $DeploymentScriptOutputs = @{}
