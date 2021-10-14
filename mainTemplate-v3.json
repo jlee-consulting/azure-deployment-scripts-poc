@@ -12,7 +12,8 @@
       }
     },
     "variables": {
-      "deploymentName" : "runPowerShellWithOutput-v3"
+      "deploymentName" : "runPowerShellWithOutput-v3",
+      "deploymentScript" : "https://raw.githubusercontent.com/jlee-consulting/azure-deployment-scripts-poc/main/azure-powershell/azure-powershell-v3.ps1"
     },
     "resources": [
       {
@@ -24,7 +25,7 @@
         "properties": {
           "forceUpdateTag": "[parameters('utcValue')]",
           "azPowerShellVersion": "5.0",
-          "primaryScriptUri": "https://raw.githubusercontent.com/jlee-consulting/azure-deployment-scripts-poc/main/azure-powershell/azure-powershell-v3.ps1",
+          "primaryScriptUri": "[variables('deploymentScript')]",
           "arguments": "[concat('-subscriptionId', ' ', subscription().subscriptionId)]",
           "timeout": "PT1H",
           "cleanupPreference": "OnSuccess",
