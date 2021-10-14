@@ -10,7 +10,32 @@ Write-Output $output
 ## DeviceCodeCredential authentication failed: Verification code expired before contacting the server
 # Connect-AzAccount -UseDeviceAuthentication
 
+## WARNING: Unable to acquire token for tenant 'organizations' with error 'ManagedIdentityCredential authentication unavailable. No Managed Identity endpoint found.'
+
+Get-AzSubscription
+
 Get-AzResourceGroup
+
+Get-AZTenant
+
+Get-AzADApplication
+
+## Get-AzureADMSApplication: The term 'Get-AzureADMSApplication' is not recognized as a name of a cmdlet, function, script file, or executable program.
+## Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+# Get-AzureADMSApplication
+
+Get-AZWebApp
+
+Get-AzAccessToken 
+
+# Import-Module Pnp.Powershell
+
+## Get-PnPTenantSite: The term 'Get-PnPTenantSite' is not recognized as a name of a cmdlet, function, script file, or executable program.
+## Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+# Get-PnPTenantSite
+# Get-PnPGroup
+# Get-PnpList
+
 
 $DeploymentScriptOutputs = @{}
 $DeploymentScriptOutputs['text'] = $output
