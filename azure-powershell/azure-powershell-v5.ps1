@@ -34,7 +34,7 @@ Get-AzAccessToken
 ## Get-PnPTenantSite: The term 'Get-PnPTenantSite' is not recognized as a name of a cmdlet, function, script file, or executable program.
 ## Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
 
-Install-Module SharePointPnPPowerShellOnline -SkipPublisherCheck -AllowClobber
+Install-Module SharePointPnPPowerShellOnline -SkipPublisherCheck -AllowClobber -AcceptLicense -Force
 
 ## Get-PnPTenantSite: There is currently no connection yet. Use Connect-PnPOnline to connect.
 Get-PnPTenantSite
