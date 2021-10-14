@@ -18,7 +18,8 @@ Get-AzResourceGroup
 
 Get-AZTenant
 
-Get-AzADApplication
+## Insufficient privileges to complete the operation.
+# Get-AzADApplication
 
 ## Get-AzureADMSApplication: The term 'Get-AzureADMSApplication' is not recognized as a name of a cmdlet, function, script file, or executable program.
 ## Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
