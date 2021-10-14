@@ -38,7 +38,7 @@ Get-AzAccessToken
 Install-Module SharePointPnPPowerShellOnline -SkipPublisherCheck -AllowClobber -AcceptLicense -Force
 
 ## Get-PnPTenantSite: There is currently no connection yet. Use Connect-PnPOnline to connect.
-Get-PnPTenantSite
+# Get-PnPTenantSite
 
 ## Get-PnPGroup: There is currently no connection yet. Use Connect-PnPOnline to connect.
 # Get-PnPGroup
