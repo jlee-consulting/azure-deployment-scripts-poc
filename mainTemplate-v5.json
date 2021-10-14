@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "type": "string",
+      "defaultValue": "\\\"deploymentScripts PoC\\\""
+    },
+    "utcValue": {
+      "type": "string",
+      "defaultValue": "[utcNow()]"
+    }
+  },
+  "variables": {
+    "deploymentName" : "runPowerShellWithOutput-v4",
+    "deploymentScript" : "https://raw.githubusercontent.com/jlee-consulting/azure-deployment-scripts-poc/main/azure-powershell/azure-powershell-v4.ps1"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "[variables('deploymentName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "AzurePowerShell",
+      "properties": {
+        "forceUpdateTag": "[parameters('utcValue')]",
+        "azPowerShellVersion": "5.0",
+        "primaryScriptUri": "[variables('deploymentScript')]",
+        "arguments": "[concat('-subscriptionId', ' ', subscription().subscriptionId)]",
+        "timeout": "PT1H",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    }
+  ],
+  "outputs": {
+    "result": {
+      "value": "[reference(variables('deploymentName')).outputs.text]",
+      "type": "string"
+    }
+  }
+}
