@@ -1,0 +1,170 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.4.0.0",
+  "parameters": {
+    "appPlanName": {
+      "defaultValue": "",
+      "maxLength": 20,
+      "type": "string",
+      "metadata": {
+        "description": "App service hosting plan name. Length of the name should be less than or equal to 20."
+      }
+    },
+    "appPlanSKU": {
+      "defaultValue": "B1",
+      "allowedValues": [
+        "B1",
+        "B2",
+        "B3",
+        "S1",
+        "S2",
+        "S3",
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "type": "string",
+      "metadata": {
+        "description": "Describes plan's pricing tier and instance size. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
+      }
+    },
+    "appPlanSKUCapacity": {
+      "defaultValue": 1,
+      "minValue": 1,
+      "type": "int",
+      "metadata": {
+        "description": "Describes plan's instance count"
+      }
+    },
+    "webAppName": {
+      "defaultValue": "clientwebappname",
+      "maxLength": 20,
+      "type": "string",
+      "metadata": {
+        "description": "Name of the azure app service. Default url will be <app name>.azurewebsites.net. Therefore, URL needs to be globally unique."
+      }
+    },
+    "configSiteURL": {
+      "defaultValue": "",
+      "maxLength": 100,
+      "type": "string",
+      "metadata": {
+        "description": "URL of the client configuration site collection in SharePoint"
+      }
+    }
+  },
+  "variables": {
+    "deployPackageUri": "https://client.blob.core.windows.net/site-packages/Deployment.zip",
+    "uniqueName": "",
+    "hostingPlanName": "[concat(parameters('appPlanName'), variables('uniqueName'))]",
+    "webSiteName": "[concat(parameters('webAppName'), variables('uniqueName'))]",
+    "enabledForDeployment": false,
+    "enabledForDiskEncryption": false,
+    "enabledForTemplateDeployment": true
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-02-01",
+      "name": "pid-guid",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2018-02-01",
+      "name": "[variables('hostingPlanName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "HostingPlan"
+      },
+      "sku": {
+        "name": "[parameters('appPlanSKU')]",
+        "capacity": "[parameters('appPlanSKUCapacity')]"
+      },
+      "properties": {
+        "name": "[variables('hostingPlanName')]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-02-01",
+      "name": "[variables('webSiteName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('hostingPlanName')]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName')))]": "empty",
+        "displayName": "Website"
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "name": "[variables('webSiteName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+        "httpsOnly": true,
+        "siteConfig": {
+          "AlwaysOn": true,
+          "virtualApplications": [
+            {
+              "virtualPath": "/",
+              "physicalPath": "site\\wwwroot"
+            },
+            {
+              "virtualPath": "/client_API",
+              "physicalPath": "site\\wwwroot\\client_API"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "type": "config",
+          "name": "appsettings",
+          "apiVersion": "2018-02-01",
+          "dependsOn": [
+            "[variables('webSiteName')]"
+          ],
+          "properties": {
+            "Client_Suite:ConfigSiteURL": "[parameters('configSiteURL')]"
+          }
+        },
+        {
+          "name": "MSDeploy",
+          "type": "extensions",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2018-11-01",
+          "dependsOn": [
+            "[variables('webSiteName')]",
+            "appsettings"
+          ],
+          "tags": {
+            "displayName": "WebAppMSDeploy"
+          },
+          "properties": {
+            "packageUri": "[variables('deployPackageUri')]"
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "siteUri": {
+      "type": "string",
+      "value": "[reference(concat('Microsoft.Web/sites/', variables('webSiteName'))).hostnames[0]]"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    }
+  }
+}
